@@ -537,6 +537,7 @@
             this.Style = MetroFramework.MetroColorStyle.Default;
             this.Text = "3DS Rom Tools";
             this.Theme = MetroFramework.MetroThemeStyle.Default;
+            this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.metroTabControl1.ResumeLayout(false);
             this.metroTabPage1.ResumeLayout(false);

@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace _3ds_Rom_Tools
@@ -46,6 +45,7 @@ namespace _3ds_Rom_Tools
             this.StyleManager = metroStyleManager1;
             metroStyleManager1.Style = MetroColorStyle.Teal;
 
+            //Disable extract and unpack buttons until game is opened.
             metroButton2.Enabled = false;
             metroButton3.Enabled = false;
             metroButton4.Enabled = false;
@@ -53,6 +53,7 @@ namespace _3ds_Rom_Tools
             metroButton6.Enabled = false;
             metroButton7.Enabled = false;
 
+            //Disable Xor buttons until xorpads are opened.
             metroButton15.Enabled = false;
             metroButton16.Enabled = false;
             metroButton17.Enabled = false;
@@ -60,11 +61,40 @@ namespace _3ds_Rom_Tools
         }
 
         //==========================================================================================
-
+        
         //Switch Theme Checkbox
         private void metroCheckBox1_CheckStateChanged(object sender, EventArgs e)
         {
-            metroStyleManager1.Theme = metroStyleManager1.Theme == MetroThemeStyle.Light ? MetroThemeStyle.Dark : MetroThemeStyle.Light;
+            this.metroStyleManager1.Theme = metroStyleManager1.Theme == MetroThemeStyle.Light ? MetroThemeStyle.Dark : MetroThemeStyle.Light;
+            if (metroStyleManager1.Theme == MetroThemeStyle.Dark)
+            {
+                Properties.Settings.Default.Theme = "Dark";
+                Properties.Settings.Default.Save();
+                richTextBox1.Text = "Theme changed to Dark";
+            }
+            else if (metroStyleManager1.Theme == MetroThemeStyle.Light)
+            {
+                Properties.Settings.Default.Theme = "Light";
+                Properties.Settings.Default.Save();
+                richTextBox1.Text = "Theme changed to Light";
+            }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            switch (Properties.Settings.Default.Theme)
+            {
+                case "Dark":
+                    this.metroStyleManager1.Theme = Properties.Settings.Default.ThemeDark;
+                    break;
+
+                case "Light":
+                    this.metroStyleManager1.Theme = Properties.Settings.Default.ThemeLight;
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         //==========================================================================================
@@ -78,7 +108,6 @@ namespace _3ds_Rom_Tools
         //Help Button
         private void metroButton8_Click(object sender, EventArgs e)
         {
-
             HelpBox help = new HelpBox();
             help.StyleManager = this.StyleManager;
             help.ShowDialog();
@@ -154,6 +183,11 @@ namespace _3ds_Rom_Tools
             richTextBox1.Text = "ctrtool -p --exheader=exheader.bin" + space + "\"" + ofd.FileName + "\"";
             runCommand();
             MsgBox.Show("Exheader extraction complete!", "Exheader Extraction", MsgBox.Buttons.OK);
+            if (File.Exists(exheader))
+            {
+                //Enable unpack button only if exheader.bin exists
+                metroButton5.Enabled = true;
+            }
         }
 
         //Extract ExeFS Button
@@ -162,6 +196,11 @@ namespace _3ds_Rom_Tools
             richTextBox1.Text = "ctrtool -p --exefs=exefs.bin" + space + "\"" + ofd.FileName + "\"";
             runCommand();
             MsgBox.Show("ExeFS extraction complete!", "ExeFS Extraction", MsgBox.Buttons.OK);
+            if (File.Exists(exefs))
+            {
+                //Enable unpack button only if exefs.bin exists
+                metroButton6.Enabled = true;
+            }
         }
 
         //Extract RomFS Button
@@ -170,6 +209,11 @@ namespace _3ds_Rom_Tools
             richTextBox1.Text = "ctrtool -p --romfs=romfs.bin" + space + "\"" + ofd.FileName + "\"";
             runCommand();
             MsgBox.Show("RomFS extraction complete!", "RomFS Extraction", MsgBox.Buttons.OK);
+            if (File.Exists(romfs))
+            {
+                //Enable unpack button only if romfs.bin exists
+                metroButton7.Enabled = true;
+            }
         }
 
         //==========================================================================================
@@ -241,13 +285,10 @@ namespace _3ds_Rom_Tools
                 metroTextBox1.Text = ofd.SafeFileName;
                 richTextBox1.AppendText(space + ofd.FileName);
 
-                //Enable all the extract and unpack buttons once a game has been opened.
+                //Enable all the extract buttons once a game has been opened.
                 metroButton2.Enabled = true;
                 metroButton3.Enabled = true;
                 metroButton4.Enabled = true;
-                metroButton5.Enabled = true;
-                metroButton6.Enabled = true;
-                metroButton7.Enabled = true;
             }
             //Create the output directory based on the game file name (minus extension).
             //Then create the encrypted, decrypted and unpacked sub-folders.
