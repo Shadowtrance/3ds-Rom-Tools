@@ -282,21 +282,29 @@ namespace _3ds_Rom_Tools
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                metroTextBox1.Text = ofd.SafeFileName;
-                richTextBox1.AppendText(space + ofd.FileName);
+                try
+                {
+                    metroTextBox1.Text = ofd.SafeFileName;
+                    richTextBox1.AppendText(space + ofd.FileName);
 
-                //Enable all the extract buttons once a game has been opened.
-                metroButton2.Enabled = true;
-                metroButton3.Enabled = true;
-                metroButton4.Enabled = true;
+                    //Enable all the extract buttons once a game has been opened.
+                    metroButton2.Enabled = true;
+                    metroButton3.Enabled = true;
+                    metroButton4.Enabled = true;
+
+                    //Create the output directory based on the game file name (minus extension).
+                    //Then create the encrypted, decrypted and unpacked sub-folders.
+                    string path = Path.GetFileNameWithoutExtension(metroTextBox1.Text);
+                    Directory.CreateDirectory(path);
+                    Directory.CreateDirectory(Path.Combine(path, "unpacked"));
+                    Directory.CreateDirectory(Path.Combine(path, "encrypted"));
+                    Directory.CreateDirectory(Path.Combine(path, "decrypted"));
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show("Error: " + ex, "Error!", MsgBox.Buttons.OK);
+                }
             }
-            //Create the output directory based on the game file name (minus extension).
-            //Then create the encrypted, decrypted and unpacked sub-folders.
-            string path = Path.GetFileNameWithoutExtension(metroTextBox1.Text);
-            Directory.CreateDirectory(path);
-            Directory.CreateDirectory(Path.Combine(path, "unpacked"));
-            Directory.CreateDirectory(Path.Combine(path, "encrypted"));
-            Directory.CreateDirectory(Path.Combine(path, "decrypted"));
         }
 
         //exefs norm xorpad
@@ -306,8 +314,15 @@ namespace _3ds_Rom_Tools
 
             if (ofd2.ShowDialog() == DialogResult.OK)
             {
-                metroTextBox2.Text = ofd2.SafeFileName;
-                richTextBox2.AppendText(space + ofd2.FileName);
+                try
+                {
+                    metroTextBox2.Text = ofd2.SafeFileName;
+                    richTextBox2.AppendText(space + ofd2.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show("Error: " + ex, "Error!", MsgBox.Buttons.OK);
+                }
             }
         }
 
@@ -318,11 +333,18 @@ namespace _3ds_Rom_Tools
 
             if (ofd3.ShowDialog() == DialogResult.OK)
             {
-                metroTextBox3.Text = ofd3.SafeFileName;
-                richTextBox2.AppendText(space + ofd3.FileName);
+                try
+                {
+                    metroTextBox3.Text = ofd3.SafeFileName;
+                    richTextBox2.AppendText(space + ofd3.FileName);
 
-                //enable Merge ExeFS Button once exefs_norm and exefs_7x xorpads have been opened.
-                metroButton15.Enabled = true;
+                    //enable Merge ExeFS Button once exefs_norm and exefs_7x xorpads have been opened.
+                    metroButton15.Enabled = true;
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show("Error: " + ex, "Error!", MsgBox.Buttons.OK);
+                }
             }
         }
         
@@ -333,11 +355,18 @@ namespace _3ds_Rom_Tools
 
             if (ofd4.ShowDialog() == DialogResult.OK)
             {
-                metroTextBox4.Text = ofd4.SafeFileName;
-                richTextBox2.AppendText(space + ofd4.FileName);
+                try
+                {
+                    metroTextBox4.Text = ofd4.SafeFileName;
+                    richTextBox2.AppendText(space + ofd4.FileName);
 
-                //enable Xor Exheader Button once exheader xorpad has been opened.
-                metroButton16.Enabled = true;
+                    //enable Xor Exheader Button once exheader xorpad has been opened.
+                    metroButton16.Enabled = true;
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show("Error: " + ex, "Error!", MsgBox.Buttons.OK);
+                }
             }
         }
 
@@ -348,11 +377,18 @@ namespace _3ds_Rom_Tools
 
             if (ofd5.ShowDialog() == DialogResult.OK)
             {
-                metroTextBox5.Text = ofd5.SafeFileName;
-                richTextBox2.AppendText(space + ofd5.FileName);
+                try
+                {
+                    metroTextBox5.Text = ofd5.SafeFileName;
+                    richTextBox2.AppendText(space + ofd5.FileName);
 
-                //enable Xor RomFS Button once romfs xorpad has been opened.
-                metroButton17.Enabled = true;
+                    //enable Xor RomFS Button once romfs xorpad has been opened.
+                    metroButton17.Enabled = true;
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show("Error: " + ex, "Error!", MsgBox.Buttons.OK);
+                }
             }
         }
 
@@ -363,11 +399,18 @@ namespace _3ds_Rom_Tools
 
             if (ofd6.ShowDialog() == DialogResult.OK)
             {
-                metroTextBox6.Text = ofd6.SafeFileName;
-                richTextBox2.AppendText(space + ofd6.FileName);
+                try
+                {
+                    metroTextBox6.Text = ofd6.SafeFileName;
+                    richTextBox2.AppendText(space + ofd6.FileName);
 
-                //enable Xor ExeFS Button once exefs xorpad has been opened.
-                metroButton18.Enabled = true;
+                    //enable Xor ExeFS Button once exefs xorpad has been opened.
+                    metroButton18.Enabled = true;
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show("Error: " + ex, "Error!", MsgBox.Buttons.OK);
+                }
             }
         }
 
